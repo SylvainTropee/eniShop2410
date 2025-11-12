@@ -1,6 +1,7 @@
 package com.example.enishopcda2410
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -11,37 +12,28 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.enishopcda2410.bo.Article
+import com.example.enishopcda2410.repository.ArticleRepository
 import com.example.enishopcda2410.ui.theme.EniShopCDA2410Theme
 
+private const val TAG = "MainActivity"
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             EniShopCDA2410Theme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
+
+                val article  = ArticleRepository.getArticle(3)
+                Log.i(TAG, article.toString())
+                val id = ArticleRepository.addArticle(
+                    Article(
+                        name = "Test"
                     )
-                }
+                )
+                Log.i(TAG, ArticleRepository.getArticle(id).toString())
             }
         }
     }
 }
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    EniShopCDA2410Theme {
-        Greeting("Android")
-    }
-}
