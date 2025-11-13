@@ -59,3 +59,9 @@ fun EniShopTitle(modifier: Modifier = Modifier) {
 private fun AppBarPreview() {
     EniShopAppBar()
 }
+
+@Preview
+@Composable
+private fun EniShopTitlePreview() {
+    EniShopTitle()
+}
