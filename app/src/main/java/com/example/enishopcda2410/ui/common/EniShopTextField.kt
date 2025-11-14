@@ -22,6 +22,9 @@ fun EniShopTextField(
     label : String,
     value : String,
     onValueChange : (String) -> Unit,
+    enabled : Boolean = true,
+    readOnly : Boolean = false,
+    trailingIcon : @Composable () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
 
@@ -41,7 +44,10 @@ fun EniShopTextField(
             TextField(
                 value = value,
                 onValueChange = onValueChange,
-                modifier = Modifier.fillMaxWidth()
+                enabled = enabled,
+                readOnly = readOnly,
+                trailingIcon = trailingIcon,
+                modifier = modifier.fillMaxWidth()
             )
         }
     }
