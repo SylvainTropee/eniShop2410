@@ -17,8 +17,11 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -26,13 +29,37 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.example.enishopcda2410.bo.Article
 import com.example.enishopcda2410.repository.ArticleRepository
+import com.example.enishopcda2410.ui.common.EniShopAppBar
 import com.example.enishopcda2410.utils.toPriceFormat
+import com.example.enishopcda2410.vm.ArticleListViewModel
 import org.w3c.dom.Text
 
+@Composable
+fun ArticleListScreen(
+    articleListViewModel: ArticleListViewModel = viewModel(factory = ArticleListViewModel.Factory),
+    modifier: Modifier = Modifier
+) {
+    val articles by articleListViewModel.articles.collectAsState()
+    val categories by articleListViewModel.categories.collectAsState()
 
+    Scaffold(
+        topBar = { EniShopAppBar() }
+    ) {
+        Column(
+            modifier = Modifier
+                .padding(it)
+                .padding(8.dp)
+        ) {
+            CategoryFilterChip(categories = categories)
+            ArticleList(articles = articles)
+        }
+    }
+
+}
 
 @Composable
 fun ArticleList(
@@ -79,7 +106,8 @@ fun ArticleItem(
                 model = article.urlImage,
                 contentDescription = article.name
             )
-            Text(article.name,
+            Text(
+                article.name,
                 minLines = 2,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
@@ -94,9 +122,9 @@ fun ArticleItem(
 
 
 @Composable
-fun CategoryFilterChip(modifier: Modifier = Modifier) {
-
-    val categories = listOf("electronics", "jewelery", "men's clothing", "women's clothing")
+fun CategoryFilterChip(
+    categories : List<String>,
+    modifier: Modifier = Modifier) {
 
     LazyRow(
         horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -120,5 +148,5 @@ fun CategoryFilterChip(modifier: Modifier = Modifier) {
 @Preview
 @Composable
 fun ArticleListPreview(modifier: Modifier = Modifier) {
-    ArticleList(articles = ArticleRepository().getAllArticle())
+    ArticleListScreen()
 }

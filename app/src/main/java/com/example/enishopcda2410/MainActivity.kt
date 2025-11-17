@@ -10,6 +10,7 @@ import com.example.enishopcda2410.ui.screen.ArticleForm
 import com.example.enishopcda2410.ui.screen.ArticleFormScreen
 import com.example.enishopcda2410.ui.screen.ArticleItem
 import com.example.enishopcda2410.ui.screen.ArticleList
+import com.example.enishopcda2410.ui.screen.ArticleListScreen
 import com.example.enishopcda2410.ui.theme.EniShopCDA2410Theme
 
 private const val TAG = "MainActivity"
@@ -20,7 +21,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             EniShopCDA2410Theme {
 
-                ArticleList(ArticleRepository().getAllArticle())
+                ArticleListScreen()
             }
         }
     }
