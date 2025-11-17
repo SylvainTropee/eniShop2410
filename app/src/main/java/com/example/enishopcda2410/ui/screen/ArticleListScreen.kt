@@ -14,14 +14,20 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Card
 import androidx.compose.material3.FilterChip
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -45,6 +51,12 @@ fun ArticleListScreen(
 ) {
     val articles by articleListViewModel.articles.collectAsState()
     val categories by articleListViewModel.categories.collectAsState()
+    var selectedCategory by rememberSaveable() { mutableStateOf("") }
+
+    val filteredList = articles.filter {
+        it.category == selectedCategory || selectedCategory == ""
+    }
+
 
     Scaffold(
         topBar = { EniShopAppBar() }
@@ -54,8 +66,14 @@ fun ArticleListScreen(
                 .padding(it)
                 .padding(8.dp)
         ) {
-            CategoryFilterChip(categories = categories)
-            ArticleList(articles = articles)
+            CategoryFilterChip(
+                categories = categories,
+                selectedCategory = selectedCategory,
+                onCategoryClick = {
+                    selectedCategory = it
+                }
+            )
+            ArticleList(articles = filteredList)
         }
     }
 
@@ -123,20 +141,37 @@ fun ArticleItem(
 
 @Composable
 fun CategoryFilterChip(
-    categories : List<String>,
-    modifier: Modifier = Modifier) {
+    categories: List<String>,
+    selectedCategory: String,
+    onCategoryClick: (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
 
     LazyRow(
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         items(categories) { category ->
             FilterChip(
-                selected = false,
-                onClick = {},
+                selected = selectedCategory == category,
+                onClick = {
+                    if (selectedCategory == category) {
+                        onCategoryClick("")
+                    } else {
+                        onCategoryClick(category)
+                    }
+                },
                 label = {
                     Text(category.replaceFirstChar { c ->
                         c.uppercase()
                     })
+                },
+                leadingIcon =  {
+                    if (selectedCategory == category){
+                        Icon(
+                            imageVector = Icons.Default.Check,
+                            contentDescription = "Check"
+                        )
+                    }
                 }
             )
         }
