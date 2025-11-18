@@ -1,5 +1,8 @@
 package com.example.enishopcda2410.ui.screen
 
+import android.app.SearchManager
+import android.content.Intent
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -13,36 +16,60 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.net.toUri
+import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.example.enishopcda2410.bo.Article
 import com.example.enishopcda2410.repository.ArticleRepository
 import com.example.enishopcda2410.ui.common.EniShopAppBar
 import com.example.enishopcda2410.utils.toFrenchFormat
 import com.example.enishopcda2410.utils.toPriceFormat
+import com.example.enishopcda2410.vm.ArticleDetailViewModel
 
 
 @Composable
-fun ArticleDetailScreen(modifier: Modifier = Modifier) {
+fun ArticleDetailScreen(
+    articleId: Long,
+    articleDetailViewModel: ArticleDetailViewModel = viewModel(factory = ArticleDetailViewModel.Factory),
+    modifier: Modifier = Modifier
+) {
+
+    val article by articleDetailViewModel.article.collectAsState()
+
+
+    LaunchedEffect(Unit) {
+        articleDetailViewModel.loadArticle(articleId)
+    }
+
     Scaffold(
         topBar = { EniShopAppBar() }
     ) {
-        ArticleDetail(
-            article = ArticleRepository().getArticle(2)!!,
-            modifier = Modifier.padding(it)
-        )
+        article?.let { it1 ->
+            ArticleDetail(
+                article = it1,
+                modifier = Modifier.padding(it)
+            )
+        }
     }
 }
+
 
 @Composable
 fun ArticleDetail(
     article: Article,
     modifier: Modifier = Modifier
 ) {
+
+    val context = LocalContext.current
 
     Column(
         modifier = modifier
@@ -54,7 +81,19 @@ fun ArticleDetail(
         Text(
             text = article.name,
             style = MaterialTheme.typography.titleLarge,
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
+            modifier = Modifier.clickable {
+//                Intent(
+//                    Intent.ACTION_VIEW,
+//                    "https://www.google.com/search?q=${article.name}+eni+shop".toUri()
+//                ).also {
+//                    context.startActivity(it)
+//                }
+                Intent(Intent.ACTION_WEB_SEARCH).also {
+                    it.putExtra(SearchManager.QUERY, "${article.name}+eni+shop")
+                    context.startActivity(it)
+                }
+            }
         )
         Surface(
             color = MaterialTheme.colorScheme.inverseOnSurface,
@@ -96,5 +135,5 @@ fun ArticleDetail(
 @Preview
 @Composable
 private fun ArticlePreview() {
-    ArticleDetailScreen()
+    //ArticleDetailScreen()
 }

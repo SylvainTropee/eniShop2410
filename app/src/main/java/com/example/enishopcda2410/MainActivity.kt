@@ -21,7 +21,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             EniShopCDA2410Theme {
 
-                ArticleListScreen()
+                ArticleDetailScreen(articleId = 2)
             }
         }
     }
