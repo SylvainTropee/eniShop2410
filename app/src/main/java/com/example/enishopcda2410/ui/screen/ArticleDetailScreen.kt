@@ -22,6 +22,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -93,7 +94,7 @@ fun ArticleDetail(
                     it.putExtra(SearchManager.QUERY, "${article.name}+eni+shop")
                     context.startActivity(it)
                 }
-            }
+            }.testTag("articleName")
         )
         Surface(
             color = MaterialTheme.colorScheme.inverseOnSurface,
@@ -107,7 +108,8 @@ fun ArticleDetail(
         }
         Text(
             text = article.description,
-            textAlign = TextAlign.Justify
+            textAlign = TextAlign.Justify,
+            modifier = Modifier.testTag("articleDescription")
         )
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -121,7 +123,8 @@ fun ArticleDetail(
         ) {
             Checkbox(
                 checked = false,
-                onCheckedChange = {}
+                onCheckedChange = {},
+                modifier = Modifier.testTag("articleFav")
             )
             Text(text = "Favoris ?")
         }

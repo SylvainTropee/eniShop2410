@@ -52,6 +52,11 @@ dependencies {
     //accès à la méthode viewModel()
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.9.2")
 
+    //librairie de test supplémentaire
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4")
+    androidTestImplementation("androidx.test.ext:junit:1.3.0")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.7.0")
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
