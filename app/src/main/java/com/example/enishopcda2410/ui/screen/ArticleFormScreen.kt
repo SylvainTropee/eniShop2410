@@ -35,7 +35,8 @@ import kotlin.math.exp
 
 
 @Composable
-fun ArticleFormScreen(modifier: Modifier = Modifier) {
+fun ArticleFormScreen(
+    modifier: Modifier = Modifier) {
     Scaffold(
         topBar = { EniShopAppBar() }
     ) {

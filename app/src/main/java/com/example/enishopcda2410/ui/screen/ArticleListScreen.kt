@@ -2,6 +2,7 @@ package com.example.enishopcda2410.ui.screen
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -15,9 +16,11 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Card
 import androidx.compose.material3.FilterChip
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -46,6 +49,8 @@ import org.w3c.dom.Text
 
 @Composable
 fun ArticleListScreen(
+    onNavigateToArticleDetail: (Long) -> Unit,
+    onNavigateToArticleForm : () -> Unit,
     articleListViewModel: ArticleListViewModel = viewModel(factory = ArticleListViewModel.Factory),
     modifier: Modifier = Modifier
 ) {
@@ -59,7 +64,8 @@ fun ArticleListScreen(
 
 
     Scaffold(
-        topBar = { EniShopAppBar() }
+        topBar = { EniShopAppBar() },
+        floatingActionButton = { ArticleListFAB(onNavigateToArticleForm = onNavigateToArticleForm) }
     ) {
         Column(
             modifier = Modifier
@@ -73,7 +79,10 @@ fun ArticleListScreen(
                     selectedCategory = it
                 }
             )
-            ArticleList(articles = filteredList)
+            ArticleList(
+                articles = filteredList,
+                onNavigateToArticleDetail = onNavigateToArticleDetail
+            )
         }
     }
 
@@ -82,6 +91,7 @@ fun ArticleListScreen(
 @Composable
 fun ArticleList(
     articles: List<Article>,
+    onNavigateToArticleDetail: (Long) -> Unit,
     modifier: Modifier = Modifier
 ) {
 
@@ -91,7 +101,10 @@ fun ArticleList(
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         items(articles) { article ->
-            ArticleItem(article = article)
+            ArticleItem(
+                article = article,
+                onNavigateToArticleDetail = onNavigateToArticleDetail
+            )
         }
     }
 
@@ -101,12 +114,16 @@ fun ArticleList(
 @Composable
 fun ArticleItem(
     article: Article,
+    onNavigateToArticleDetail: (Long) -> Unit,
     modifier: Modifier = Modifier
 ) {
 
     Card(
         border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary),
-        shape = RoundedCornerShape(8.dp)
+        shape = RoundedCornerShape(8.dp),
+        modifier = Modifier.clickable {
+            onNavigateToArticleDetail(article.id)
+        }
 
     ) {
         Column(
@@ -165,8 +182,8 @@ fun CategoryFilterChip(
                         c.uppercase()
                     })
                 },
-                leadingIcon =  {
-                    if (selectedCategory == category){
+                leadingIcon = {
+                    if (selectedCategory == category) {
                         Icon(
                             imageVector = Icons.Default.Check,
                             contentDescription = "Check"
@@ -175,13 +192,30 @@ fun CategoryFilterChip(
                 }
             )
         }
+    }
+}
 
+@Composable
+fun ArticleListFAB(
+    onNavigateToArticleForm : () -> Unit,
+    modifier: Modifier = Modifier) {
+
+    FloatingActionButton(
+        onClick = onNavigateToArticleForm,
+        shape = CircleShape
+    ) {
+        Icon(
+            imageVector = Icons.Default.Add,
+            "Ajouter un article",
+            modifier = Modifier.size(50.dp)
+        )
     }
 
 }
 
+
 @Preview
 @Composable
 fun ArticleListPreview(modifier: Modifier = Modifier) {
-    ArticleListScreen()
+    // ArticleListScreen()
 }
