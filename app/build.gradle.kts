@@ -57,9 +57,14 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.3.0")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.7.0")
 
-
     //navigation avec compose
     implementation("androidx.navigation:navigation-compose:2.9.2")
+
+    //Datastore
+    implementation ("androidx.datastore:datastore-preferences:1.1.7")
+
+    //coroutine dans composable
+    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1")
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
