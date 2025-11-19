@@ -7,9 +7,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -22,10 +25,25 @@ import androidx.compose.ui.unit.sp
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EniShopAppBar(modifier: Modifier = Modifier) {
+fun EniShopAppBar(
+    canBack: Boolean,
+    onNavigateBack : () -> Unit,
+    modifier: Modifier = Modifier
+) {
 
     TopAppBar(
-        title = { EniShopTitle() }
+        title = { EniShopTitle() },
+        navigationIcon = {
+            if (canBack)
+                IconButton(
+                    onClick = onNavigateBack
+                ) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                        contentDescription = "Retour"
+                    )
+                }
+        }
     )
 }
 
@@ -57,7 +75,7 @@ fun EniShopTitle(modifier: Modifier = Modifier) {
 @Preview
 @Composable
 private fun AppBarPreview() {
-    EniShopAppBar()
+    //EniShopAppBar()
 }
 
 @Preview

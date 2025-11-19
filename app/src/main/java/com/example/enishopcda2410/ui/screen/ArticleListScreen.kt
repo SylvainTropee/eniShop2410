@@ -50,7 +50,6 @@ import org.w3c.dom.Text
 @Composable
 fun ArticleListScreen(
     onNavigateToArticleDetail: (Long) -> Unit,
-    onNavigateToArticleForm : () -> Unit,
     articleListViewModel: ArticleListViewModel = viewModel(factory = ArticleListViewModel.Factory),
     modifier: Modifier = Modifier
 ) {
@@ -63,13 +62,13 @@ fun ArticleListScreen(
     }
 
 
-    Scaffold(
-        topBar = { EniShopAppBar() },
-        floatingActionButton = { ArticleListFAB(onNavigateToArticleForm = onNavigateToArticleForm) }
-    ) {
+//    Scaffold(
+//        topBar = { EniShopAppBar() },
+//        floatingActionButton = { ArticleListFAB(onNavigateToArticleForm = onNavigateToArticleForm) }
+//    ) {
         Column(
             modifier = Modifier
-                .padding(it)
+                //.padding(it)
                 .padding(8.dp)
         ) {
             CategoryFilterChip(
@@ -84,7 +83,7 @@ fun ArticleListScreen(
                 onNavigateToArticleDetail = onNavigateToArticleDetail
             )
         }
-    }
+//    }
 
 }
 

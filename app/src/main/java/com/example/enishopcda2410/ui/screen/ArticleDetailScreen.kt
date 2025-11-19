@@ -51,16 +51,15 @@ fun ArticleDetailScreen(
         articleDetailViewModel.loadArticle(articleId)
     }
 
-    Scaffold(
-        topBar = { EniShopAppBar() }
-    ) {
-        article?.let { it1 ->
-            ArticleDetail(
-                article = it1,
-                modifier = Modifier.padding(it)
-            )
-        }
+//    Scaffold(
+//        topBar = { EniShopAppBar() }
+//    ) {
+    article?.let { it1 ->
+        ArticleDetail(
+            article = it1
+        )
     }
+//    }
 }
 
 
@@ -83,18 +82,20 @@ fun ArticleDetail(
             text = article.name,
             style = MaterialTheme.typography.titleLarge,
             textAlign = TextAlign.Center,
-            modifier = Modifier.clickable {
+            modifier = Modifier
+                .clickable {
 //                Intent(
 //                    Intent.ACTION_VIEW,
 //                    "https://www.google.com/search?q=${article.name}+eni+shop".toUri()
 //                ).also {
 //                    context.startActivity(it)
 //                }
-                Intent(Intent.ACTION_WEB_SEARCH).also {
-                    it.putExtra(SearchManager.QUERY, "${article.name}+eni+shop")
-                    context.startActivity(it)
+                    Intent(Intent.ACTION_WEB_SEARCH).also {
+                        it.putExtra(SearchManager.QUERY, "${article.name}+eni+shop")
+                        context.startActivity(it)
+                    }
                 }
-            }.testTag("articleName")
+                .testTag("articleName")
         )
         Surface(
             color = MaterialTheme.colorScheme.inverseOnSurface,

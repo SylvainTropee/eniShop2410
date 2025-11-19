@@ -23,9 +23,6 @@ fun EniShopNavHost(
             ArticleListScreen(
                 onNavigateToArticleDetail = { articleId ->
                     navHostController.navigate("${ArticleDetailDestination.route}/$articleId")
-                },
-                onNavigateToArticleForm = {
-                    navHostController.navigate(ArticleFormDestination.route)
                 }
             )
         }
