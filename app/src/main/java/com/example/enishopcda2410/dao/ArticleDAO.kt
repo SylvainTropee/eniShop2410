@@ -1,12 +1,24 @@
 package com.example.enishopcda2410.dao
 
+import androidx.room.Dao
+import androidx.room.Delete
+import androidx.room.Insert
+import androidx.room.Query
 import com.example.enishopcda2410.bo.Article
 
+@Dao
 interface ArticleDAO {
 
-    fun findById(id : Long) : Article?
+    @Query("SELECT * FROM Article WHERE id = :id")
+    suspend fun findById(id : Long) : Article?
 
-    fun insert(article: Article) : Long
+    @Insert
+    suspend fun insert(article: Article) : Long
 
-    fun findAll() : List<Article>
+    @Query("SELECT * FROM Article")
+    suspend fun findAll() : List<Article>
+
+    @Delete
+    suspend fun delete(article: Article)
+
 }

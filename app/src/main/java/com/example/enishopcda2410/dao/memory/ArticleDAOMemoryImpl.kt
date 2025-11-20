@@ -4,7 +4,7 @@ import com.example.enishopcda2410.bo.Article
 import com.example.enishopcda2410.dao.ArticleDAO
 import java.util.Date
 
-class ArticleDAOMemoryImpl : ArticleDAO  {
+class ArticleDAOMemoryImpl : ArticleDAO {
 
     private val articlesInMemory = mutableListOf(
         Article(
@@ -37,20 +37,24 @@ class ArticleDAOMemoryImpl : ArticleDAO  {
     )
 
 
-    override fun findById(id: Long): Article? {
-       return articlesInMemory.find {
-           it.id == id
-       }
+    override suspend fun findById(id: Long): Article? {
+        return articlesInMemory.find {
+            it.id == id
+        }
     }
 
-    override fun insert(article: Article): Long {
+    override suspend fun insert(article: Article): Long {
         articlesInMemory.add(article)
         article.id = articlesInMemory.size.toLong()
         return article.id
     }
 
-    override fun findAll(): List<Article> {
+    override suspend fun findAll(): List<Article> {
         return articlesInMemory
+    }
+
+    override suspend fun delete(article: Article) {
+        TODO("Not yet implemented")
     }
 
 }

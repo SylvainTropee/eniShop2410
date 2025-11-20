@@ -9,6 +9,7 @@ abstract class DaoFactory {
 
             return when (type) {
                 DaoType.MEMORY -> ArticleDAOMemoryImpl()
+                else -> TODO()
             }
 
         }

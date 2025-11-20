@@ -56,7 +56,14 @@ fun ArticleDetailScreen(
 //    ) {
     article?.let { it1 ->
         ArticleDetail(
-            article = it1
+            article = it1,
+            onCheckedChange = { isChecked ->
+                if(isChecked){
+                    articleDetailViewModel.insertArticle()
+                }else{
+                    articleDetailViewModel.deleteArticle()
+                }
+            }
         )
     }
 //    }
@@ -66,6 +73,7 @@ fun ArticleDetailScreen(
 @Composable
 fun ArticleDetail(
     article: Article,
+    onCheckedChange : (Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) {
 
@@ -123,8 +131,8 @@ fun ArticleDetail(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Checkbox(
-                checked = false,
-                onCheckedChange = {},
+                checked = true,
+                onCheckedChange = onCheckedChange,
                 modifier = Modifier.testTag("articleFav")
             )
             Text(text = "Favoris ?")
