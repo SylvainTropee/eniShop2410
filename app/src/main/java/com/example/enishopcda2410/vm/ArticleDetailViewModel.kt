@@ -9,6 +9,7 @@ import com.example.enishopcda2410.bo.Article
 import com.example.enishopcda2410.dao.DaoFactory
 import com.example.enishopcda2410.dao.DaoType
 import com.example.enishopcda2410.db.EniShopDatabase
+import com.example.enishopcda2410.network.CallFakeStoreApi
 import com.example.enishopcda2410.repository.ArticleRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -39,7 +40,7 @@ class ArticleDetailViewModel(
     fun insertArticle() {
         viewModelScope.launch(Dispatchers.IO) {
             _article.value?.let {
-                articleRepository.addArticle(article = it, type = DaoType.ROOM)
+                articleRepository.addArticle(article = it)
                 _isFav.value = true
             }
         }
@@ -48,7 +49,7 @@ class ArticleDetailViewModel(
     fun deleteArticle() {
         viewModelScope.launch(Dispatchers.IO) {
             _article.value?.let {
-                articleRepository.deleteArticle(it, type = DaoType.ROOM)
+                articleRepository.deleteArticle(it)
                 _isFav.value = false
             }
         }
@@ -69,7 +70,7 @@ class ArticleDetailViewModel(
 
                 return ArticleDetailViewModel(
                     ArticleRepository(
-                        articleDaoMemory = DaoFactory.createArticleDAO(DaoType.MEMORY),
+                        articleService = CallFakeStoreApi.retrofitService,
                         articleDaoRoom = EniShopDatabase.getInstance(application.applicationContext)
                             .getArticleDao()
                     )

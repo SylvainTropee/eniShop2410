@@ -9,6 +9,7 @@ import com.example.enishopcda2410.bo.Article
 import com.example.enishopcda2410.dao.DaoFactory
 import com.example.enishopcda2410.dao.DaoType
 import com.example.enishopcda2410.db.EniShopDatabase
+import com.example.enishopcda2410.network.CallFakeStoreApi
 import com.example.enishopcda2410.repository.ArticleRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -27,12 +28,17 @@ class ArticleListViewModel(
     val categories = _categories.asStateFlow()
 
 
-    init {
-
+    fun loadArticleListScreen() {
         viewModelScope.launch(Dispatchers.IO) {
             _articles.value = articleRepository.getAllArticle()
-            _categories.value =
-                listOf("electronics", "jewelery", "men's clothing", "women's clothing")
+            _categories.value = articleRepository.getCategories()
+        }
+    }
+
+    init {
+        viewModelScope.launch(Dispatchers.IO) {
+            _articles.value = articleRepository.getAllArticle()
+            _categories.value = articleRepository.getCategories()
         }
     }
 
@@ -50,7 +56,7 @@ class ArticleListViewModel(
 
                 return ArticleListViewModel(
                     ArticleRepository(
-                        articleDaoMemory = DaoFactory.createArticleDAO(DaoType.MEMORY),
+                        articleService = CallFakeStoreApi.retrofitService,
                         articleDaoRoom = EniShopDatabase.getInstance(application.applicationContext)
                             .getArticleDao()
                     )
