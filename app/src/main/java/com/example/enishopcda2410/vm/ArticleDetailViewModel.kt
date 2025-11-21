@@ -22,9 +22,17 @@ class ArticleDetailViewModel(
     private val _article = MutableStateFlow<Article?>(null)
     val article = _article.asStateFlow()
 
+    private val _isFav = MutableStateFlow(false)
+    val isFav = _isFav.asStateFlow()
+
+
     fun loadArticle(id: Long) {
         viewModelScope.launch(Dispatchers.IO) {
             _article.value = articleRepository.getArticle(id)
+            val articleFav = articleRepository.getArticle(id, DaoType.ROOM)
+            if(articleFav != null){
+                _isFav.value = true
+            }
         }
     }
 
@@ -32,6 +40,7 @@ class ArticleDetailViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             _article.value?.let {
                 articleRepository.addArticle(article = it, type = DaoType.ROOM)
+                _isFav.value = true
             }
         }
     }
@@ -40,6 +49,7 @@ class ArticleDetailViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             _article.value?.let {
                 articleRepository.deleteArticle(it, type = DaoType.ROOM)
+                _isFav.value = false
             }
         }
     }

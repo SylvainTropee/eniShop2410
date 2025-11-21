@@ -45,6 +45,7 @@ fun ArticleDetailScreen(
 ) {
 
     val article by articleDetailViewModel.article.collectAsState()
+    val isFav by articleDetailViewModel.isFav.collectAsState()
 
 
     LaunchedEffect(Unit) {
@@ -57,6 +58,7 @@ fun ArticleDetailScreen(
     article?.let { it1 ->
         ArticleDetail(
             article = it1,
+            isFav = isFav,
             onCheckedChange = { isChecked ->
                 if(isChecked){
                     articleDetailViewModel.insertArticle()
@@ -73,6 +75,7 @@ fun ArticleDetailScreen(
 @Composable
 fun ArticleDetail(
     article: Article,
+    isFav : Boolean,
     onCheckedChange : (Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -131,7 +134,7 @@ fun ArticleDetail(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Checkbox(
-                checked = true,
+                checked = isFav,
                 onCheckedChange = onCheckedChange,
                 modifier = Modifier.testTag("articleFav")
             )
